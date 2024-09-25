@@ -5,7 +5,7 @@ import logging  # 로그 출력을 위한 모듈
 
 logger = logging.getLogger('sales')  # 'sales'라는 로거 생성
 
-from ..models import Question  # Question 모델 가져오기
+from ..models import Product  # Product 모델 가져오기
 
 
 # =======================================
@@ -30,13 +30,13 @@ def index(request):
     # 데이터 조회
     # ===============================
 
-    # Question 모델의 데이터를 최신순으로 정렬하여 가져옵니다.
-    question_list = Question.objects.order_by('-create_date')
+    # Product 모델의 데이터를 최신순으로 정렬하여 가져옵니다.
+    product_list = Product.objects.order_by('-create_date')
 
     # 검색어(kw)가 있으면 필터링 수행
     if kw:
         # 제목, 내용, 답변 내용, 질문 글쓴이, 답변 글쓴이에서 검색어를 포함한 데이터 필터링
-        question_list = question_list.filter(
+        product_list = product_list.filter(
             Q(subject__icontains=kw) |  # 제목에 검색어 포함
             Q(content__icontains=kw) |  # 내용에 검색어 포함
             Q(answer__content__icontains=kw) |  # 답변 내용에 검색어 포함
@@ -49,7 +49,7 @@ def index(request):
     # ===============================
 
     # 페이지네이터(Paginator)를 사용해 한 페이지에 10개 항목씩 표시
-    paginator = Paginator(question_list, 10)
+    paginator = Paginator(product_list, 10)
 
     # 현재 페이지 번호에 해당하는 데이터 가져오기
     page_obj = paginator.get_page(page)
@@ -68,17 +68,17 @@ def index(request):
 # =======================================
 #sales 질문 상세 내용 출력 뷰
 # =======================================
-def detail(request, question_id):
+def detail(request, product_id):
     ''' salessales 내용 출력 '''
 
-    # 주어진 question_id에 해당하는 Question 객체를 가져옵니다. 없으면 404 에러 발생
-    question = get_object_or_404(Question, pk=question_id)
+    # 주어진 product_id에 해당하는 Product 객체를 가져옵니다. 없으면 404 에러 발생
+    product = get_object_or_404(Product, pk=product_id)
 
     # 질문에 달린 댓글들 중, 부모가 없는 댓글들(최상위 댓글)을 가져옵니다.
-    comments = question.comments.filter(parent__isnull=True)
+    comments = product.comments.filter(parent__isnull=True)
 
     # 템플릿에 전달할 데이터 설정 (질문, 댓글)
-    context = {'question': question, 'comments': comments}
+    context = {'product': product, 'comments': comments}
 
     # 템플릿 'sales/product_detail.html'을 렌더링하여 응답 반환
     return render(request, 'sales/product_detail.html', context)
@@ -95,15 +95,15 @@ def detail(request, question_id):
 #     sales 목록 출력
 #     """
 #     # 기본적으로 모델명_list.html 템플릿을 사용
-#     model = Question  # 모델 설정
+#     model = Product  # 모델 설정
 
 #     # 최신 순으로 정렬된 질문 목록을 반환
 #     def get_queryset(self):
-#         return Question.objects.order_by('-create_date')
+#         return Product.objects.order_by('-create_date')
 
 # # sales 질문 상세 내용을 출력하는 클래스 기반 뷰 (DetailView)
 # class DetailView(generic.DetailView):
 #     """
 #     sales 내용 출력
 #     """
-#     model = Question  # Question 모델을 사용하여 상세 내용을 출력
+#     model = Product  # Product 모델을 사용하여 상세 내용을 출력

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load pybo_filter %}
+{% load sales_filter %}
 
 {% block content %}
 <div class="container my-3">
@@ -15,51 +15,53 @@
     {% endif %}
 
     {% comment %} 질문 제목 및 정보 {% endcomment %}
-    <h2 class="border-bottom py-2">{{ question.subject }}</h2>
+    <h2 class="border-bottom py-2">{{ product.pcode }}</h2>
 
     <div class="card-body">
         {% comment %} 질문 내용 표시 {% endcomment %}
-        <div class="card-text">{{ question.content|mark }}</div>
-
-        {% comment %} 질문 작성 및 수정 정보 표시 {% endcomment %}
+<!--        <div class="card-text">{{ product.content|mark }}</div>-->
+        <div class="card-text">{{ product.pname }}</div>
+        <div class="card-text">{{ product.unitprice }}</div>
+        <div class="card-text">{{ product.discountrate }}</div>
+        
         <div class="d-flex justify-content-end">
-            {% if question.modify_date %}
+            {% if product.modify_date %}
                 <div class="badge bg-light text-dark p-2 text-start mx-3">
                     <div class="mb-2">modified at</div>
-                    <div>{{ question.modify_date }}</div>
+                    <div>{{ product.modify_date }}</div>
                 </div>
             {% endif %}
             <div class="badge bg-light text-dark p-2 text-start">
-                <div class="mb-2">{{ question.author.username }}</div>
-                <div>{{ question.create_date }}</div>
+                <div class="mb-2">{{ product.author.username }}</div>
+                <div>{{ product.create_date }}</div>
             </div>
         </div>
 
         {% comment %} 업로드된 이미지1 표시 {% endcomment %}
-        {% if question.image1 %}
+        {% if product.image1 %}
             <div>
                 <h5>업로드된 이미지1:</h5>
-                <img src="{{ question.image1.url }}" alt="Uploaded Image" style="max-width: 300px; height: auto;">
+                <img src="{{ product.image1.url }}" alt="Uploaded Image" style="max-width: 300px; height: auto;">
             </div>
         {% endif %}
 
         {% comment %} 업로드된 이미지2 표시 {% endcomment %}
-        {% if question.image2 %}
+        {% if product.image2 %}
             <div>
                 <h5>업로드된 이미지2:</h5>
-                <img src="{{ question.image2.url }}" alt="Uploaded Image" style="max-width: 300px; height: auto;">
+                <img src="{{ product.image2.url }}" alt="Uploaded Image" style="max-width: 300px; height: auto;">
             </div>
         {% endif %}
 
         {% comment %} 추천 및 수정/삭제 버튼 {% endcomment %}
         <div class="my-3">
-            <a href="javascript:void(0)" data-uri="{% url 'pybo:question_vote' question.id %}" class="recommend btn btn-sm btn-outline-secondary">
-                추천 <span class="badge rounded-pill bg-success">{{ question.voter.count }}</span>
+            <a href="javascript:void(0)" data-uri="{% url 'sales:product_vote' product.id %}" class="recommend btn btn-sm btn-outline-secondary">
+                추천 <span class="badge rounded-pill bg-success">{{ product.voter.count }}</span>
             </a>
             
-            {% if request.user == question.author %}
-                <a href="{% url 'pybo:question_modify' question.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
-                <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'pybo:question_delete' question.id %}">
+            {% if request.user == product.author %}
+                <a href="{% url 'sales:product_modify' product.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'sales:product_delete' product.id %}">
                     삭제
                 </a>
             {% endif %}
@@ -77,10 +79,10 @@
                 </span>
 
                 {% if request.user == comment.author %}
-                    <a href="{% url 'pybo:comment_modify_question' comment.id %}" class="small">수정</a>
-                    <a href="#" class="small delete" data-uri="{% url 'pybo:comment_delete_question' comment.id %}">삭제</a>
+                    <a href="{% url 'sales:comment_modify_product' comment.id %}" class="small">수정</a>
+                    <a href="#" class="small delete" data-uri="{% url 'sales:comment_delete_product' comment.id %}">삭제</a>
                 {% endif %}
-                <a href="{% url 'pybo:comment_create_question' question.id %}" class="small">댓글 달기</a>
+                <a href="{% url 'sales:comment_create_product' product.id %}" class="small">댓글 달기</a>
 
                 <ul>
                     {% for reply in comment.replies.all %}
@@ -94,14 +96,14 @@
     </div>
 
     <div>
-        <a href="{% url 'pybo:comment_create_question' question.id %}" class="small"><small>질문 댓글 추가...</small></a>
+        <a href="{% url 'sales:comment_create_product' product.id %}" class="small"><small>질문 댓글 추가...</small></a>
     </div>
 
     {% comment %} 답변 수 표시 {% endcomment %}
-    <h5 class="border-bottom my-3 py-2">{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
+    <h5 class="border-bottom my-3 py-2">{{ product.answer_set.count }}개의 답변이 있습니다.</h5>
 
     {% comment %} 답변 리스트 표시 {% endcomment %}
-    {% for answer in question.answer_set.all %}
+    {% for answer in product.answer_set.all %}
         <a id="answer_{{ answer.id }}"></a>
         <div class="card my-3">
             <div class="card-body">
@@ -131,12 +133,12 @@
 
                 {% comment %} 답변에 대한 추천 및 수정/삭제 버튼 {% endcomment %}
                 <div class="my-3">
-                    <a href="javascript:void(0)" data-uri="{% url 'pybo:question_vote' question.id %}" class="recommend btn btn-sm btn-outline-secondary">
-                        추천 <span class="badge rounded-pill bg-success">{{ question.voter.count }}</span>
+                    <a href="javascript:void(0)" data-uri="{% url 'sales:product_vote' product.id %}" class="recommend btn btn-sm btn-outline-secondary">
+                        추천 <span class="badge rounded-pill bg-success">{{ product.voter.count }}</span>
                     </a>
                     {% if request.user == answer.author %}
-                        <a href="{% url 'pybo:answer_modify' answer.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
-                        <a href="#" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'pybo:answer_delete' answer.id %}">삭제</a>
+                        <a href="{% url 'sales:answer_modify' answer.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                        <a href="#" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'sales:answer_delete' answer.id %}">삭제</a>
                     {% endif %}
                 </div>
             </div>
@@ -144,7 +146,7 @@
     {% endfor %}
 
     {% comment %} 답변 등록 폼 {% endcomment %}
-    <form action="{% url 'pybo:answer_create' question.id %}" method="post" enctype="multipart/form-data" class="my-3">
+    <form action="{% url 'sales:answer_create' product.id %}" method="post" enctype="multipart/form-data" class="my-3">
         {% csrf_token %}
         {% include "form_errors.html" %}
         <div class="form-group">

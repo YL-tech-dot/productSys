@@ -262,8 +262,8 @@ $(document).ready(function() {
         const isModify = '{{ form.instance.pk|yesno:"true,false" }}';  // 수정 상태 여부 확인
         const questionId = '{{ form.instance.pk }}';  // 수정 중인 경우 PK 값 가져오기
         const url = isModify === 'true'
-            ? '{% url "pybo:question_modify" question_id=0 %}'.replace('0', questionId)  // 수정 시 URL 설정
-            : '{% url "pybo:question_create" %}';  // 생성 시 URL 설정
+            ? '{% url "sales:question_modify" question_id=0 %}'.replace('0', questionId)  // 수정 시 URL 설정
+            : '{% url "sales:question_create" %}';  // 생성 시 URL 설정
 
         // Ajax 요청으로 폼 데이터 전송
         $.ajax({

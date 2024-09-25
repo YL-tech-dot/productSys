@@ -3,16 +3,16 @@ from django.shortcuts import render, get_object_or_404  # 뷰 처리, 객체 조
 from django.db.models import Q  # 검색 조건을 위한 Q 객체
 import logging  # 로그 출력을 위한 모듈
 
-logger = logging.getLogger('pybo')  # 'pybo'라는 로거 생성
+logger = logging.getLogger('sales')  # 'sales'라는 로거 생성
 
 from ..models import Question  # Question 모델 가져오기
 
 
 # =======================================
-# pybo 질문 목록 출력 뷰
+# sales 질문 목록 출력 뷰
 # =======================================
 def index(request):
-    ''' pybo 목록 출력 '''
+    ''' sales 목록 출력 '''
     # INFO 레벨 로그 메시지 출력
     logger.info("INFO 레벨로 출력")
 
@@ -61,15 +61,15 @@ def index(request):
     # 템플릿에 전달할 데이터 정의 (페이지 객체, 현재 페이지 번호, 검색어)
     context = {'QList': page_obj, 'page': page, 'kw': kw}
 
-    # 템플릿 'pybo/question_list.html'을 렌더링하여 응답 반환
-    return render(request, 'pybo/question_list.html', context)
+    # 템플릿 'sales/product_list.html'을 렌더링하여 응답 반환
+    return render(request, 'sales/product_list.html', context)
 
 
 # =======================================
-# pybo 질문 상세 내용 출력 뷰
+#sales 질문 상세 내용 출력 뷰
 # =======================================
 def detail(request, question_id):
-    ''' pybo 내용 출력 '''
+    ''' salessales 내용 출력 '''
 
     # 주어진 question_id에 해당하는 Question 객체를 가져옵니다. 없으면 404 에러 발생
     question = get_object_or_404(Question, pk=question_id)
@@ -80,8 +80,8 @@ def detail(request, question_id):
     # 템플릿에 전달할 데이터 설정 (질문, 댓글)
     context = {'question': question, 'comments': comments}
 
-    # 템플릿 'pybo/question_detail.html'을 렌더링하여 응답 반환
-    return render(request, 'pybo/question_detail.html', context)
+    # 템플릿 'sales/product_detail.html'을 렌더링하여 응답 반환
+    return render(request, 'sales/product_detail.html', context)
 
 #########################################
 # 제네릭 뷰를 사용한 방법 (주석 처리)
@@ -89,10 +89,10 @@ def detail(request, question_id):
 # # 클래스 기반의 제네릭 뷰를 사용하여 질문 목록 및 상세 내용을 처리할 수 있음
 # from django.views import generic
 
-# # pybo 질문 목록을 출력하는 클래스 기반 뷰 (ListView)
+# # sales 질문 목록을 출력하는 클래스 기반 뷰 (ListView)
 # class IndexView(generic.ListView):
 #     """
-#     pybo 목록 출력
+#     sales 목록 출력
 #     """
 #     # 기본적으로 모델명_list.html 템플릿을 사용
 #     model = Question  # 모델 설정
@@ -101,9 +101,9 @@ def detail(request, question_id):
 #     def get_queryset(self):
 #         return Question.objects.order_by('-create_date')
 
-# # pybo 질문 상세 내용을 출력하는 클래스 기반 뷰 (DetailView)
+# # sales 질문 상세 내용을 출력하는 클래스 기반 뷰 (DetailView)
 # class DetailView(generic.DetailView):
 #     """
-#     pybo 내용 출력
+#     sales 내용 출력
 #     """
 #     model = Question  # Question 모델을 사용하여 상세 내용을 출력

@@ -1,15 +1,15 @@
 from django import forms
-from sales.models import Question, Answer, Comment
+from sales.models import Product, Answer, Comment
 
 
 ########################################################################################################
 
 # ===================================
-# QuestionForm (질문 생성 및 수정 폼)
+# ProductForm (질문 생성 및 수정 폼)
 # ===================================
-class QuestionForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
     class Meta:
-        model = Question  # 이 폼이 Question 모델과 연결됨
+        model = Product  # 이 폼이 Product 모델과 연결됨
         fields = ['subject', 'content', 'image1', 'image2']  # 사용할 필드 (제목, 내용, 이미지1, 이미지2)
 
         # 각 필드에 표시될 라벨을 정의

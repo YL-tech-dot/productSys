@@ -14,7 +14,7 @@ from ..models import Question, Answer  # Question과 Answer 모델
 """
 @login_required(login_url='common:login')  # 로그인 상태에서만 접근 가능하게 설정, 비로그인 사용자는 로그인 페이지로 리다이렉트
 def answer_create(request, question_id):
-    """ pybo 답변 등록 """
+    """ sales 답변 등록 """
     
     # question_id에 해당하는 Question 객체를 가져오고, 없으면 404 에러 반환
     question = get_object_or_404(Question, pk=question_id)
@@ -34,7 +34,7 @@ def answer_create(request, question_id):
             answer.save()  # 최종적으로 답변 DB에 저장
             
             # 답변 작성 후 질문 상세 페이지로 리다이렉트하고 앵커로 해당 답변 위치로 이동
-            return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=question.id), answer.id))
+            return redirect('{}#answer_{}'.format(resolve_url('sales:detail', question_id=question.id), answer.id))
     
     # GET 요청 시 빈 폼 생성
     else:
@@ -43,14 +43,14 @@ def answer_create(request, question_id):
     # 템플릿에 전달할 데이터 설정
     context = {'question': question, 'form': form}
     
-    # 'pybo/question_detail.html' 템플릿을 렌더링하여 응답 반환
-    return render(request, 'pybo/question_detail.html', context)
+    # 'sales/product_detail.html' 템플릿을 렌더링하여 응답 반환
+    return render(request, 'sales/product_detail.html', context)
 
 ########################################################################################################
 
 @login_required(login_url='common:login')  # 로그인 상태에서만 접근 가능하게 설정
 def answer_modify(request, answer_id):
-    """ pybo 답변 수정 """
+    """ sales 답변 수정 """
     
     # answer_id에 해당하는 Answer 객체를 가져오고, 없으면 404 에러 반환
     answer = get_object_or_404(Answer, pk=answer_id)
@@ -58,7 +58,7 @@ def answer_modify(request, answer_id):
     # 현재 로그인한 사용자가 답변 작성자가 아닐 경우 에러 메시지를 출력
     if request.user != answer.author:
         messages.error(request, '수정권한이 없습니다')
-        return redirect('pybo:detail', question_id=answer.question.id)  # 권한이 없으면 질문 상세 페이지로 리다이렉트
+        return redirect('sales:detail', question_id=answer.question.id)  # 권한이 없으면 질문 상세 페이지로 리다이렉트
     
     # POST 요청 시 수정된 데이터를 처리
     if request.method == "POST":
@@ -72,7 +72,7 @@ def answer_modify(request, answer_id):
             answer.save()  # 수정된 답변을 DB에 저장
             
             # 수정된 답변으로 질문 상세 페이지로 리다이렉트하고 앵커로 해당 답변 위치로 이동
-            return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=answer.question.id), answer.id))
+            return redirect('{}#answer_{}'.format(resolve_url('sales:detail', question_id=answer.question.id), answer.id))
     
     # GET 요청 시 기존 데이터를 담아 폼을 생성
     else:
@@ -81,14 +81,14 @@ def answer_modify(request, answer_id):
     # 템플릿에 전달할 데이터 설정
     context = {'answer': answer, 'form': form}
     
-    # 'pybo/answer_form.html' 템플릿을 렌더링하여 응답 반환
-    return render(request, 'pybo/answer_form.html', context)
+    # 'sales/answer_form.html' 템플릿을 렌더링하여 응답 반환
+    return render(request, 'sales/answer_form.html', context)
 
 ########################################################################################################
 
 @login_required(login_url='common:login')  # 로그인 상태에서만 접근 가능하게 설정
 def answer_delete(request, answer_id):
-    """ pybo 답변 삭제 """
+    """ sales 답변 삭제 """
     
     # answer_id에 해당하는 Answer 객체를 가져오고, 없으면 404 에러 반환
     answer = get_object_or_404(Answer, pk=answer_id)
@@ -102,13 +102,13 @@ def answer_delete(request, answer_id):
         answer.delete()
     
     # 삭제 후 질문 상세 페이지로 리다이렉트
-    return redirect('pybo:detail', question_id=answer.question.id)
+    return redirect('sales:detail', question_id=answer.question.id)
 
 ########################################################################################################
 
 @login_required(login_url='common:login')  # 로그인 상태에서만 접근 가능하게 설정
 def answer_vote(request, answer_id):
-    """ pybo 답변 추천 """
+    """ sales 답변 추천 """
     
     # answer_id에 해당하는 Answer 객체를 가져오고, 없으면 404 에러 반환
     answer = get_object_or_404(Answer, pk=answer_id)
@@ -122,6 +122,6 @@ def answer_vote(request, answer_id):
         answer.voter.add(request.user)  # 현재 로그인한 사용자를 추천자 목록에 추가
     
     # 추천 후 질문 상세 페이지로 리다이렉트하고 앵커로 해당 답변 위치로 이동
-    return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=answer.question.id), answer.id))
+    return redirect('{}#answer_{}'.format(resolve_url('sales:detail', question_id=answer.question.id), answer.id))
 
 ########################################################################################################

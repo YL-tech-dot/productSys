@@ -30,7 +30,7 @@ SECRET_KEY = 'is698z$n$0qxwlihk37e&m=y4es=(g*hrk+d=&4x9rz8(+h-*='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.125.89.196']
 
 # 미디어 파일 관련 설정
 MEDIA_URL= 'media/'
@@ -191,7 +191,7 @@ LOGGING = {
             'level': 'INFO',
             'filters': ['require_debug_false'],
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/mysite.log',
+            'filename': BASE_DIR / 'logs/productSys.log',
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -207,7 +207,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'pybo': {
+        'sales': {
             'handlers': ['console', 'file'],
             'level':'INFO',
         },

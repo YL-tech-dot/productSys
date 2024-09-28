@@ -30,7 +30,11 @@ SECRET_KEY = 'is698z$n$0qxwlihk37e&m=y4es=(g*hrk+d=&4x9rz8(+h-*='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.125.89.196']
+ALLOWED_HOSTS = ['127.0.0.1','13.125.89.196']
+
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # 미디어 파일 관련 설정
 MEDIA_URL= 'media/'
@@ -39,10 +43,10 @@ MEDIA_ROOT =  os.path.join(BASE_DIR,'media')
 # Application definition
 
 INSTALLED_APPS = [
-    'common.apps.CommonConfig',
-    'sales.apps.SalesConfig',
+    'common.apps.CommonConfig', # common 앱을 추가 # CommonConfig 클래스를 추가
+    'sales.apps.SalesConfig',  # sales 앱을 추가 # SalesConfig 클래스를 추가
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # 장고의 인증 앱 로그인, 로그아웃, 회원가입 등의 기능을 제공
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -64,7 +68,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'], # templates 디렉터리를 추가
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,12 +88,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_db2',
-        'USER': 'root',
-        'PASSWORD': 'root1234',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -129,12 +129,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'static', # static 디렉터리를 추가
 ]
 
-# 로그인/로그아웃 성공후 이동하는 URL
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
 
 
 MAX_UPLOAD_SIZE = 5242880
@@ -152,22 +149,25 @@ ALLOWED_FILE_TYPES=[
 # 로깅설정
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': False, # 만약 True로 설정하면 기존에 설정된 로거들을 사용하지 않게 된다.
     'filters': {
         'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
+            '()': 'django.utils.log.RequireDebugFalse',  # DEBUG=False 인지를 확인하는 필터
         },
         'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
+            '()': 'django.utils.log.RequireDebugTrue',  # DEBUG=True 인지를 확인하는 필터
         },
     },
     'formatters': {
         'django.server': {
             '()': 'django.utils.log.ServerFormatter',
-            'format': '[{server_time}] {message}',
+            'format': '[{server_time}] {message}', # 서버 로그 포맷, 서버 시간과 메시지를 출력
             'style': '{',
         },
-        'standard': {
+        'standard': {# asctime - 현재 시간
+            # levelname - 로그의 레벨(debug, info, warning, error, critical)
+            # name - 로거명
+            # message - 출력 내용
         'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         },
     },

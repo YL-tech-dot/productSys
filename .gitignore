@@ -3,3 +3,4 @@ db.mysql
 *.pyc
 __pycache__
 static
+db.sqlite3

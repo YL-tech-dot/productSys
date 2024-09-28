@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container my-3">
 
-    {% comment %} 알림 메시지 표시 {% endcomment %}
+     <!--  알림 메시지 표시 -->
     {% if messages %}
         <div class="alert alert-danger my-3" role="alert">
             {% for message in messages %}
@@ -14,11 +14,11 @@
         </div>
     {% endif %}
 
-    {% comment %} 질문 제목 및 정보 {% endcomment %}
+     <!--  질문 제목 및 정보 -->
     <h2 class="border-bottom py-2">{{ product.pcode }}</h2>
 
     <div class="card-body">
-        {% comment %} 질문 내용 표시 {% endcomment %}
+         <!--  질문 내용 표시 -->
 <!--        <div class="card-text">{{ product.content|mark }}</div>-->
         <div class="card-text">{{ product.pname }}</div>
         <div class="card-text">{{ product.unitprice }}</div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        {% comment %} 업로드된 이미지1 표시 {% endcomment %}
+         <!--  업로드된 이미지1 표시 -->
         {% if product.image1 %}
             <div>
                 <h5>업로드된 이미지1:</h5>
@@ -45,7 +45,7 @@
             </div>
         {% endif %}
 
-        {% comment %} 업로드된 이미지2 표시 {% endcomment %}
+         <!--  업로드된 이미지2 표시 -->
         {% if product.image2 %}
             <div>
                 <h5>업로드된 이미지2:</h5>
@@ -53,7 +53,7 @@
             </div>
         {% endif %}
 
-        {% comment %} 추천 및 수정/삭제 버튼 {% endcomment %}
+         <!--  추천 및 수정/삭제 버튼 -->
         <div class="my-3">
             <a href="javascript:void(0)" data-uri="{% url 'sales:product_vote' product.id %}" class="recommend btn btn-sm btn-outline-secondary">
                 추천 <span class="badge rounded-pill bg-success">{{ product.voter.count }}</span>
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    {% comment %} 댓글 리스트 표시 {% endcomment %}
+     <!--  댓글 리스트 표시 -->
     <div class="mt-3">
         {% for comment in comments %}
             <div class="comment py-2 text-muted">
@@ -99,10 +99,10 @@
         <a href="{% url 'sales:comment_create_product' product.id %}" class="small"><small>질문 댓글 추가...</small></a>
     </div>
 
-    {% comment %} 답변 수 표시 {% endcomment %}
+     <!--  답변 수 표시 -->
     <h5 class="border-bottom my-3 py-2">{{ product.answer_set.count }}개의 답변이 있습니다.</h5>
 
-    {% comment %} 답변 리스트 표시 {% endcomment %}
+     <!--  답변 리스트 표시 -->
     {% for answer in product.answer_set.all %}
         <a id="answer_{{ answer.id }}"></a>
         <div class="card my-3">
@@ -117,7 +117,7 @@
                     {% endif %}
                 </div>
 
-                {% comment %} 답변 작성 및 수정 정보 표시 {% endcomment %}
+                 <!--  답변 작성 및 수정 정보 표시 -->
                 <div class="d-flex justify-content-end">
                     {% if answer.modify_date %}
                         <div class="badge bg-light text-dark p-2 text-start mx-3">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                {% comment %} 답변에 대한 추천 및 수정/삭제 버튼 {% endcomment %}
+                 <!--  답변에 대한 추천 및 수정/삭제 버튼 -->
                 <div class="my-3">
                     <a href="javascript:void(0)" data-uri="{% url 'sales:product_vote' product.id %}" class="recommend btn btn-sm btn-outline-secondary">
                         추천 <span class="badge rounded-pill bg-success">{{ product.voter.count }}</span>
@@ -145,7 +145,7 @@
         </div>
     {% endfor %}
 
-    {% comment %} 답변 등록 폼 {% endcomment %}
+     <!--  답변 등록 폼 -->
     <form action="{% url 'sales:answer_create' product.id %}" method="post" enctype="multipart/form-data" class="my-3">
         {% csrf_token %}
         {% include "form_errors.html" %}

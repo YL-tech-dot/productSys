@@ -1,0 +1,27 @@
+# serializers.py
+from rest_framework import serializers
+from .models import Category
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
+
+# views.py
+from rest_framework import viewsets
+from .models import Category
+from .serializers import CategorySerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+# urls.py (API)
+from rest_framework.routers import DefaultRouter
+from .views import CategoryViewSet
+
+router = DefaultRouter()
+router.register(r'categories', CategoryViewSet)
+
+urlpatterns += router.urls

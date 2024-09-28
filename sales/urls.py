@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import base_views, product_views, answer_views, comment_views
+from .views import base_views, product_views
+from .views.category_views import category_list, category_create, category_update, category_delete
 
 app_name = 'sales'  # URL 네임스페이스. 다른 앱의 URL 패턴과 충돌하지 않도록 설정
 
@@ -22,15 +23,18 @@ urlpatterns = [
     # 질문 상세 페이지로 이동. product_id 매개변수를 받아 해당 질문의 세부 내용을 보여주는 base_views.detail 함수 호출.
     path('<int:product_id>/', base_views.detail, name='detail'),
     path('product/create/', product_views.product_create, name='product_create'),
-    path('product/modify/<int:product_id>/', product_views.product_modify, name='product_modify'),
-    path('product/delete/<int:product_id>/', product_views.product_delete, name='product_delete'),
-    path('product/vote/<int:product_id>/', product_views.product_vote, name='product_vote'),
+    path('categories/', category_list, name='category_list'),
+    path('categories/create/', category_create, name='category_create'),
+    path('categories/update/<int:pk>/', category_update, name='category_update'),
+    # path('product/modify/<int:product_id>/', product_views.product_modify, name='product_modify'),
+    # path('product/delete/<int:product_id>/', product_views.product_delete, name='product_delete'),
+    # path('product/vote/<int:product_id>/', product_views.product_vote, name='product_vote'),
     # answer_views.py 관련 URL
-    path('answer/create/<int:product_id>/', answer_views.answer_create, name='answer_create'),
-    path('answer/modify/<int:answer_id>/', answer_views.answer_modify, name='answer_modify'),
-    path('answer/delete/<int:answer_id>/', answer_views.answer_delete, name='answer_delete'),
-    path('answer/vote/<int:answer_id>/', answer_views.answer_vote, name='answer_vote'),
-    path('comment/create/product/<int:product_id>/', comment_views.comment_create_product, name='comment_create_product'),
-    path('comment/modify/product/<int:comment_id>/', comment_views.comment_modify_product, name='comment_modify_product'),
-    path('comment/delete/product/<int:comment_id>/', comment_views.comment_delete_product, name='comment_delete_product'),
+    # path('answer/create/<int:product_id>/', answer_views.answer_create, name='answer_create'),
+    # path('answer/modify/<int:answer_id>/', answer_views.answer_modify, name='answer_modify'),
+    # path('answer/delete/<int:answer_id>/', answer_views.answer_delete, name='answer_delete'),
+    # path('answer/vote/<int:answer_id>/', answer_views.answer_vote, name='answer_vote'),
+    # path('comment/create/product/<int:product_id>/', comment_views.comment_create_product, name='comment_create_product'),
+    # path('comment/modify/product/<int:comment_id>/', comment_views.comment_modify_product, name='comment_modify_product'),
+    # path('comment/delete/product/<int:comment_id>/', comment_views.comment_delete_product, name='comment_delete_product'),
 ]

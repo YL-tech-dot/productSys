@@ -1,30 +1,101 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ko">
-<title>BestVoter</title>
+<html lang="ko" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    {% comment %} Bootstrap CSS {% endcomment %}
-    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nabla&display=swap');</style>
     <link rel="icon" href="{% static 'icon/redicon.png' %}">
+    <title>ProductLy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="어떻게 하는 고지">
+    <meta name="author" content="YeaEun Lee and Bootstrap contributors">
+    <meta name="generator" content="YeaEun Lee and Bootstrap Hugo 0.1.0">
+    <!-- , shrink-to-fit=no   -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'baseboot_min/bootstrap.min.css' %}">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nabla&display=swap');</style>
+    <script src="{% static 'baseboot_min/color-modes.js' %}"></script>
+    <script src="{% static 'baseboot_min/sidebars.css' %}"></script>
+    <script src="{% static 'baseboot_min/sidebars.js ' %}"></script>
+    <script src="../basebboot_min/color-modes.js"></script>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <style>
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 </head>
 <body>
+    <!-- 네비게이션 바 -->
     {% include 'navbar.html' %}
-    {% comment %} 기본 템플릿 안에 삽입될 내용 Start {% endcomment %}
-    {% block content %} 
+    <!--    기본 템플릿 안에 삽입될 내용 Start-->
+    {% block content %}
     {% endblock %}
-
-    {% comment %} 기본 템플릿 안에 삽입될 내용 End {% endcomment %}
-
-    {% comment %} jQuery JS {% endcomment %}
-    <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+    <!--    End -->
+    <!-- jQuery JS   -->
+    <script src="{% static 'baseboot_min/jquery-3.4.1.min.js' %}"></script>
     <!-- Bootstrap JS -->
-    <script src="{% static 'bootstrap.min.js' %}"></script>
-    {% comment %} 자바스크립트 Start {% endcomment %}
+    <script src="{% static 'baseboot_min/bootstrap.min.js' %}"></script>
+    <!-- 자바스크립트 Start   -->
     {% block script %}
     {% endblock %}
-    {% comment %} 자바스크립트 End {% endcomment %}
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (light)">
+          <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+            <use href="#sun-fill"></use>
+          </svg>
+          <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shdow" aria-labelledby="bd-theme-text">
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="light" aria-pressed="true">
+              <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                <use href="#sun-fill"></use>
+              </svg>
+              " Light "
+              <svg class="bi msp-auto d-none" width="1em" height="1em">
+                <use href="#check2"></use>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+              <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                <use href="#moon-start-fill"></use>
+              </svg>
+              " Dark "
+              <svg class="bi msp-auto d-none" width="1em" height="1em">
+                <use href="#check2"></use>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
+              <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                <use href="#circle-half"></use>
+              </svg>
+              " Auto "
+              <svg class="bi msp-auto d-none" width="1em" height="1em">
+                <use href="#check2"></use>
+              </svg>
+            </button>
+          </li>
+        </ul>
+  </div>
+
+
 </body>
 </html>

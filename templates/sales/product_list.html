@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load sales_filter %}
-{% comment %} add 필터에는 변수를 적용할 수 없기 때문에 만든 filter 모듈 {% endcomment %}
+<!--  add 필터에는 변수를 적용할 수 없기 때문에 만든 filter 모듈 -->
 
 {% block title %}질문 목록{% endblock %}
 
@@ -10,25 +10,25 @@
 
     <div class="row my-3">
         <div class="col-6">
-            {% comment %} 질문 등록 버튼 {% endcomment %}
+            <!--  질문 등록 버튼 -->
             <a href="{% url 'sales:product_create' %}" class="btn btn-primary">질문 등록</a>
         </div>
 
-        {% comment %} 검색창 start {% endcomment %}
+        <!--  검색창 start -->
         <div class="col-6">
             <div class="input-group">
-                {% comment %} 검색 키워드를 입력하는 필드 {% endcomment %}
+                <!--  검색 키워드를 입력하는 필드 -->
                 <input type="text" id="search_kw" class="form-control" value="{{ kw|default_if_none:'' }}">
                 <div class="input-group-append">
-                    {% comment %} 검색 버튼 {% endcomment %}
+                    <!--  검색 버튼 -->
                     <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
                 </div>
             </div>
         </div>
-        {% comment %} 검색창 end {% endcomment %}
+        <!--  검색창 end -->
     </div>
 
-    {% comment %} 질문 목록 출력 start {% endcomment %}
+    <!--  질문 목록 출력 start -->
     <table class="table">
         <thead class="text-center">
             <tr class="thead-dark">
@@ -42,6 +42,7 @@
         <tbody>
             {% if product_list %}
                 {% for product in product_list %}
+                <div>
                     <li>
                         <a href="/sales/{{ product.id}}/">
                             {{ product.pcode}}
@@ -56,69 +57,68 @@
                             {{ product.discountrate}}
                         </a>
                     </li>
+                </div>
                 {% endfor %}
                 {% for product in product_list %}
                     <tr class="text-center">
-                        {% comment %} 질문 번호 계산 및 출력 {% endcomment %}
+                        <!--  질문 번호 계산 및 출력 -->
                         <td>
+                            <!-- 자동으로 4자리 수에 a0000 이걸 어떻게 만들지 ? -->
+
                             {{ product_list.paginator.count|sub:product_list.start_index|sub:forloop.counter0|add:1 }}
                         </td>
-                        {% comment %} 추천 수 출력 (추천이 1개 이상일 때만 출력) {% endcomment %}
-                        <td>
-                            {% if product.voter.all.count > 0 %}
-                                <span class="badge badge-warning">{{ product.voter.all.count }}</span>
-                            {% endif %}
-                        </td>
-                        {% comment %} 질문 제목 및 답변 개수 출력 {% endcomment %}
+                        <!--  sales:detail 로 접근할때 pcode, pname 값을 가져와라 product_detail -->
                         <td class="text-start">
-                            <a href="{% url 'sales:detail' product.id %}">{{ product.subject }}</a>
-                            {% if product.answer_set.count > 0 %}
-                                <span class="text-danger small mx-2">{{ product.answer_set.count }}</span>
-                            {% endif %}
+                            <a href="{% url 'sales:detail' product.id %}">{{ product.pname }}</a>
                         </td>
-                        {% comment %} 질문 작성자 및 작성 날짜 출력 {% endcomment %}
+                        <td class="text-start">
+                            <a href="{% url 'sales:detail' product.id %}">{{ product. }}</a>
+                        </td><td class="text-start">
+                            <a href="{% url 'sales:detail' product.id %}">{{ product.pname }}</a>
+                        </td>
+                        <!--  질문 작성자 및 작성 날짜 출력 -->
                         <td>{{ product.author.username }}</td>
                         <td>{{ product.create_date }}</td>
                     </tr>
                 {% endfor %}
             {% else %}
-                {% comment %} 질문이 없을 때 출력할 메시지 {% endcomment %}
+                <!--  질문이 없을 때 출력할 메시지 -->
                 <tr>
                     <td colspan="4">질문이 없습니다.</td>
                 </tr>
             {% endif %}
         </tbody>
     </table>
-    {% comment %} 질문 목록 출력 end {% endcomment %}
+    <!--  질문 목록 출력 end -->
 
-    {% comment %} 페이징 처리 start {% endcomment %}
+    <!--  페이징 처리 start -->
     <ul class="pagination justify-content-center">
         {% if product_list.has_previous %}
-            {% comment %} 이전 페이지로 이동하는 링크 {% endcomment %}
+            <!--  이전 페이지로 이동하는 링크 -->
             <li class="page-item">
                 <a class="page-link" data-page="{{ product_list.previous_page_number }}" href="javascript:void(0)">
                     이전
                 </a>
             </li>
         {% else %}
-            {% comment %} 이전 페이지가 없으면 비활성화 {% endcomment %}
+            <!--  이전 페이지가 없으면 비활성화 -->
             <li class="page-item disabled">
                 <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
             </li>
         {% endif %}
 
-        {% comment %} 페이지 번호를 출력하는 반복문 {% endcomment %}
+        <!--  페이지 번호를 출력하는 반복문 -->
         {% for page_number in product_list.paginator.page_range %}
             {% if page_number >= product_list.number|add:-5 and page_number <= product_list.number|add:5 %}
                 {% if page_number == product_list.number %}
-                    {% comment %} 현재 페이지는 활성 상태로 표시 {% endcomment %}
+                    <!--  현재 페이지는 활성 상태로 표시 -->
                     <li class="page-item active" aria-current="page">
                         <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
                             {{ page_number }}
                         </a>
                     </li>
                 {% else %}
-                    {% comment %} 다른 페이지 링크 {% endcomment %}
+                    <!--  다른 페이지 링크 -->
                     <li class="page-item">
                         <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
                             {{ page_number }}
@@ -129,23 +129,23 @@
         {% endfor %}
 
         {% if product_list.has_next %}
-            {% comment %} 다음 페이지로 이동하는 링크 {% endcomment %}
+            <!--  다음 페이지로 이동하는 링크 -->
             <li class="page-item">
                 <a class="page-link" data-page="{{ product_list.next_page_number }}" href="javascript:void(0)">다음</a>
             </li>
         {% else %}
-            {% comment %} 다음 페이지가 없으면 비활성화 {% endcomment %}
+            <!--  다음 페이지가 없으면 비활성화 -->
             <li class="page-item disabled">
                 <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
             </li>
         {% endif %}
     </ul>
-    {% comment %} 페이징 처리 end {% endcomment %}
+    <!--  페이징 처리 end -->
 </div>
 
 <!--검색폼 : 검색 결과 서버로 전송용 (숨김) -->
 <form id="searchForm" method="get" action="{% url 'index' %}">
-    {% comment %} 검색 키워드를 서버로 전송하기 위한 숨겨진 필드 {% endcomment %}
+    <!--  검색 키워드를 서버로 전송하기 위한 숨겨진 필드 -->
     <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
     <!-- 현재 페이지 번호를 서버로 전송하기 위한 숨겨진 필드-->
     <input type="hidden" id="page" name="page" value="{{ page }}">

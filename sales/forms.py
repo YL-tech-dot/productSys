@@ -13,18 +13,23 @@ class CategoryForm(forms.ModelForm):
 # ProductForm (질문 생성 및 수정 폼)
 # ===================================
 class ProductForm(forms.ModelForm):
+    pcategories = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        empty_label="-- 카테고리 선택 --",  # 기본 옵션을 설정
+        label='카테고리',
+        required=True
+    )
+
     class Meta:
-        model = Product  # 이 폼이 Product 모델과 연결됨
-        fields = ['pcode','pname','pcontent','punitprice', 'pdiscountrate','image01','pcategories']  # 사용할 필드 (제품코드, 제품명, 단가, 할인율, 이미지1)
-        # 각 필드에 표시될 라벨을 정의
+        model = Product
+        fields = ['pcode', 'pname', 'pcontent', 'punitprice', 'pdiscountrate', 'image01', 'pcategories']
         labels = {
-            'pcode':'제품코드',
+            'pcode': '제품코드',
             'pname': '제품명',
-            'pcontent':'제품설명',
+            'pcontent': '제품설명',
             'punitprice': '단가',
             'pdiscountrate': '할인율',
             'image01': '이미지01',
-            'pcategories':'카테고리'
         }
 
 

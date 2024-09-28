@@ -7,9 +7,11 @@ from django.core.exceptions import ValidationError
 
 
 class Category(models.Model):
-    """ 카테고리화 """
     name = models.CharField(max_length=100, unique=True)
 
+    class Meta:
+        verbose_name = 'Category'  # 단수형
+        verbose_name_plural = 'Categories'  # 복수형
 
     def __str__(self):
         return self.name

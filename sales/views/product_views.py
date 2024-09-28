@@ -6,7 +6,8 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.urls import reverse
 from ..forms import ProductForm
-from ..models import Product
+from ..models import Product, Category
+
 
 # from sales.ai_system.ai_sales import start_ai
 # from sales.ai_system.ai_sales import start_ai
@@ -16,61 +17,40 @@ from ..models import Product
 @login_required(login_url='common:login')
 def product_create(request):
     """ sales 질문 등록 """
-    # POST 요청이면 폼 데이터 처리
+    categories = Category.objects.all()  # 모든 카테고리 가져오기
+    print(categories)  # 디버깅용 출력 추가
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)  # 파일 업로드 처리
-        # 폼이 유효한 경우
         if form.is_valid():
             product = form.save(commit=False)  # 데이터베이스에 저장하지 않고, 객체만 반환
-            # 'pcode', 'pname', 'punitprice', 'pdiscountrate', 'pimage01'
             product.author = request.user  # 작성자는 현재 로그인한 사용자
-            product.pcode = request.pcode
+            product.pcode = form.cleaned_data['pcode']
             product.pname = request.pname
             product.punitprice = request.punitprice
             product.pdiscountrate = request.pdiscountrate
-            product.pcategories = request.pcategories
             product.create_date = timezone.now()  # 현재 시간을 질문 작성일로 저장
+            product.pcategories = form.cleaned_data['pcategories']
             product.save()
-            
+
+            # 이미지가 업로드된 경우 처리
             if 'image01' in request.FILES:
                 product.image01 = request.FILES['image01']
-            product.save()  # 최종적으로 질문을 데이터베이스에 저장
+                product.save()  # 최종적으로 질문을 데이터베이스에 저장
             # 성공 시 JsonResponse로 리다이렉트 URL 반환
             return JsonResponse({'redirect_url': reverse('sales:index')})
-
         else:
             # 폼이 유효하지 않은 경우, 에러 메시지 반환
             return JsonResponse({'error': form.errors}, status=400)
-            # 이미지가 업로드된 경우 AI 처리 수행
-            # if product.image1:
-            #     image_path = product.image1.path  # 업로드된 이미지 경로 가져오기
-            #
-            #     # 탐지기 및 예측기 목록을 POST 요청에서 가져옴
-            #     selected_detectors = request.POST.getlist('detectors')
-            #     selected_predictors = request.POST.getlist('predictors')
-            #
-                # 탐지기나 예측기가 선택되었는지 확인
-                # if selected_detectors or selected_predictors:
-                #     # AI 모델을 이용해 이미지 처리
-                #     result_image_path = start_ai(request, image_path, selected_detectors, selected_predictors)
-                #     # result_image_path = start_ai(request, image_path, selected_detectors, selected_predictors)
-                #     # AI 처리 결과를 포함한 답변 생성
-                #     answer = Answer(
-                #         product=product,
-                #         author=request.user,
-                #         content="AI가 처리한 얼굴 인식 결과입니다.",
-                #         answer_image=result_image_path,
-                #         create_date=timezone.now(),
-                #     )
-                #     answer.save()  # 답변 저장
-            # 이미지 파일 저장
     else:
         # GET 요청일 경우 빈 폼 생성
         form = ProductForm()
-    
-    # 템플릿에 폼을 전달하여 렌더링
-    context = {'form': form}
+
+    context = {
+        'form': form,
+        'categories': categories  # 카테고리 목록 추가
+    }
     return render(request, 'sales/product_form.html', context)
+
 
 # @login_required(login_url='common:login')
 # def product_modify(request, product_id):

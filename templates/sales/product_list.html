@@ -31,62 +31,61 @@
     <!--  질문 목록 출력 start -->
     <table class="table">
         <thead class="text-center">
-            <tr class="thead-dark">
-                <th>번호</th>
-                <th>추천</th>
-                <th style="width:50%">제목</th>
-                <th>글쓴이</th>
-                <th>작성일시</th>
-            </tr>
+        <tr class="thead-dark">
+            <th>번호</th>
+            <th>추천</th>
+            <th style="width:50%">제목</th>
+            <th>글쓴이</th>
+            <th>작성일시</th>
+        </tr>
         </thead>
         <tbody>
-            {% if product_list %}
-                {% for product in product_list %}
-                <div>
-                    <li>
-                        <a href="/sales/{{ product.id}}/">
-                            {{ product.pcode}}
-                        </a>
-                        <a>
-                            {{ product.pname}}
-                        </a>
-                        <a>
-                            {{ product.unitprice}}
-                        </a>
-                        <a>
-                            {{ product.discountrate}}
-                        </a>
-                    </li>
-                </div>
-                {% endfor %}
-                {% for product in product_list %}
-                    <tr class="text-center">
-                        <!--  질문 번호 계산 및 출력 -->
-                        <td>
-                            <!-- 자동으로 4자리 수에 a0000 이걸 어떻게 만들지 ? -->
-
-                            {{ product_list.paginator.count|sub:product_list.start_index|sub:forloop.counter0|add:1 }}
-                        </td>
-                        <!--  sales:detail 로 접근할때 pcode, pname 값을 가져와라 product_detail -->
-                        <td class="text-start">
-                            <a href="{% url 'sales:detail' product.id %}">{{ product.pname }}</a>
-                        </td>
-                        <td class="text-start">
-                            <a href="{% url 'sales:detail' product.id %}">{{ product. }}</a>
-                        </td><td class="text-start">
-                            <a href="{% url 'sales:detail' product.id %}">{{ product.pname }}</a>
-                        </td>
-                        <!--  질문 작성자 및 작성 날짜 출력 -->
-                        <td>{{ product.author.username }}</td>
-                        <td>{{ product.create_date }}</td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-                <!--  질문이 없을 때 출력할 메시지 -->
-                <tr>
-                    <td colspan="4">질문이 없습니다.</td>
-                </tr>
-            {% endif %}
+        {% if product_list %}
+            {% for product in product_list %}
+            <div>
+                <li>
+                    <a href="/sales/{{ product.id }}/">
+                        {{ product.pcode }}
+                    </a>
+                    <a>
+                        {{ product.pname }}
+                    </a>
+                    <a>
+                        {{ product.unitprice }}
+                    </a>
+                    <a>
+                        {{ product.discountrate }}
+                    </a>
+                </li>
+            </div>
+            {% endfor %}
+            {% for product in product_list %}
+            <tr class="text-center">
+                <!--  질문 번호 계산 및 출력 -->
+                <td>
+                    <!-- 자동으로 4자리 수에 a0000 이걸 어떻게 만들지 ? -->
+                    {{ product_list.paginator.count|sub:product_list.start_index|sub:forloop.counter0|add:1 }}
+                </td>
+                <!--  sales:detail 로 접근할때 pcode, pname 값을 가져와라 product_detail -->
+                <td class="text-start">
+                    <a href="{% url 'sales:detail' product.id %}">{{ product.pname }}</a>
+                </td>
+                <td class="text-start">
+                    <a href="{% url 'sales:detail' product.id %}">{{ product. }}</a>
+                </td>
+                <td class="text-start">
+                    <a href="{% url 'sales:detail' product.id %}">{{ product.pname }}</a>
+                </td>
+                <!--  질문 작성자 및 작성 날짜 출력 -->
+                <td>{{ product.author.username }}</td>
+                <td>{{ product.create_date }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="4">등록된 제품이 없습니다.</td>
+        </tr>
+        {% endif %}
         </tbody>
     </table>
     <!--  질문 목록 출력 end -->
@@ -94,50 +93,50 @@
     <!--  페이징 처리 start -->
     <ul class="pagination justify-content-center">
         {% if product_list.has_previous %}
-            <!--  이전 페이지로 이동하는 링크 -->
-            <li class="page-item">
-                <a class="page-link" data-page="{{ product_list.previous_page_number }}" href="javascript:void(0)">
-                    이전
-                </a>
-            </li>
+        <!--  이전 페이지로 이동하는 링크 -->
+        <li class="page-item">
+            <a class="page-link" data-page="{{ product_list.previous_page_number }}" href="javascript:void(0)">
+                이전
+            </a>
+        </li>
         {% else %}
-            <!--  이전 페이지가 없으면 비활성화 -->
-            <li class="page-item disabled">
-                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
-            </li>
+        <!--  이전 페이지가 없으면 비활성화 -->
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
         {% endif %}
 
         <!--  페이지 번호를 출력하는 반복문 -->
         {% for page_number in product_list.paginator.page_range %}
-            {% if page_number >= product_list.number|add:-5 and page_number <= product_list.number|add:5 %}
-                {% if page_number == product_list.number %}
-                    <!--  현재 페이지는 활성 상태로 표시 -->
-                    <li class="page-item active" aria-current="page">
-                        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
-                            {{ page_number }}
-                        </a>
-                    </li>
-                {% else %}
-                    <!--  다른 페이지 링크 -->
-                    <li class="page-item">
-                        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
-                            {{ page_number }}
-                        </a>
-                    </li>
-                {% endif %}
-            {% endif %}
+        {% if page_number >= product_list.number|add:-5 and page_number <= product_list.number|add:5 %}
+        {% if page_number == product_list.number %}
+        <!--  현재 페이지는 활성 상태로 표시 -->
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
+                {{ page_number }}
+            </a>
+        </li>
+        {% else %}
+        <!--  다른 페이지 링크 -->
+        <li class="page-item">
+            <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
+                {{ page_number }}
+            </a>
+        </li>
+        {% endif %}
+        {% endif %}
         {% endfor %}
 
         {% if product_list.has_next %}
-            <!--  다음 페이지로 이동하는 링크 -->
-            <li class="page-item">
-                <a class="page-link" data-page="{{ product_list.next_page_number }}" href="javascript:void(0)">다음</a>
-            </li>
+        <!--  다음 페이지로 이동하는 링크 -->
+        <li class="page-item">
+            <a class="page-link" data-page="{{ product_list.next_page_number }}" href="javascript:void(0)">다음</a>
+        </li>
         {% else %}
-            <!--  다음 페이지가 없으면 비활성화 -->
-            <li class="page-item disabled">
-                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
-            </li>
+        <!--  다음 페이지가 없으면 비활성화 -->
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
         {% endif %}
     </ul>
     <!--  페이징 처리 end -->

@@ -4,11 +4,14 @@ from ..forms import CategoryForm, ProductForm  # 제품 폼 가져오기
 
 
 def category_list(request):
+    """모든 카테고리를 가져와서 category_list.html 템플릿에 전달"""
     categories = Category.objects.all()  # 모든 카테고리 가져오기
     return render(request, 'category_list.html', {'categories': categories})
 
 
 def category_create(request):
+    """새로운 카테고리를 생성할 수 있는 폼을 제공
+     POST 요청 시 유효성을 검사하고 카테고리를 저장한 뒤 카테고리 목록으로 리디렉션"""
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():

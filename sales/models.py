@@ -25,7 +25,7 @@ class Product(models.Model):
     # 작성자: User 모델과 다대일 관계 (1명의 사용자가 여러 질문을 작성할 수 있음)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_Product')
-    pcode = models.CharField(max_length=4, unique=True, blank=False)
+    pcode = models.CharField(max_length=4, primary_key=True)  # 4자리 문자열로 변경
     pname = models.CharField(max_length=20, blank=False)
     punitprice = models.PositiveIntegerField(blank=False)
     pdiscountrate = models.DecimalField(max_digits=3, decimal_places=1, blank=False)  # 할인율
@@ -40,22 +40,25 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         """ save 메서드를 오버라이드기존 이미지가 있는 경우, 새 이미지로 교체할 때 이전 파일 삭제 """
-        self.clean()  # 추가
-        if self.pk:
+        # 업데이트 전 이전 이미지 파일 삭제
+        if self.pk:  # 기존 인스턴스일 경우
             old_objects = Product.objects.get(pk=self.pk)
             if old_objects.image01 and old_objects.image01 != self.image01:
                 if os.path.isfile(old_objects.image01.path):
                     os.remove(old_objects.image01.path)
-        super().save(*args, **kwargs)  # Super호출시 클래스 이름을 명시할 필요없지만, 명시적 사용.
+        # pcode를 4자리 문자열로 변환 시키는 설정
+        if not self.pcode:
+            last_product = Product.objects.order_by('-pcode').first()
+            next_number = int(last_product.pcode) + 1 if last_product else 1
+            self.pcode = str(next_number).zfill(4)  # 4자리 문자열로 설정
+        super().save(*args, **kwargs)  # 최종적으로 객체 저장
 
     def delete(self, *args, **kwargs):
-        # 인스턴스가 삭제될 때 이미지 파일도 삭제
+        """ 이미지 파일 삭제 """
         if self.image01:
             if os.path.isfile(self.image01.path):
                 os.remove(self.image01.path)
-
-        # 기본 delete 메서드 호출
-        super(self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
     # 할인율 유효성 검사 (0 ~ 100 사이의 값)
     def clean(self):
@@ -69,6 +72,7 @@ class Product(models.Model):
 
 @receiver(post_save, sender=Product)
 def set_product_code(sender, instance, created, **kwargs):
+    """ 제품 코드 설정을 위한 신호 처리 """
     """sender :
         어떤 모델 수신할지 지정!  product모델에서 post_save신호를 수신중.
         현재 코드에서 sender 직접 사용하지 않지만 다른 로직에서 조건을 추가할때 유용함.
@@ -85,13 +89,13 @@ def set_product_code(sender, instance, created, **kwargs):
     print('instance 진입.')
     print(instance)
     if created and not instance.pcode:
-        existing_codes = Product.objects.exclude(pcode='').values_list('pcode', flat=True)
+        existing_codes = Product.objects.values_list('pcode', flat=True)
         existing_numbers = [int(code) for code in existing_codes if code.isdigit()]
 
         if existing_numbers:
             next_number = max(existing_numbers) + 1
         else:
-            next_number = 0  # 첫 번째 코드로 0을 사용
+            next_number = 0
 
         instance.pcode = str(next_number).zfill(4)  # 4자리 문자열로 설정
         instance.save()

@@ -1,4 +1,4 @@
-from django.contrib import messages
+# from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render
@@ -15,8 +15,9 @@ from ..models import Product, Category
 ########################################################################################################
 
 @login_required(login_url='common:login')
-def product_create(request):
-    """ sales 질문 등록 """
+def product_create_view(request):
+    """ 판매 질문 등록 POST 요청 시 제품 정보를 처리하고,
+    카테고리도 함께 저장합니다. """
     categories = Category.objects.all()  # 모든 카테고리 가져오기
     print(categories)  # 디버깅용 출력 추가
     if request.method == 'POST':
@@ -24,7 +25,11 @@ def product_create(request):
         if form.is_valid():
             product = form.save(commit=False)  # 데이터베이스에 저장하지 않고, 객체만 반환
             product.author = request.user  # 작성자는 현재 로그인한 사용자
-            product.pcode = form.cleaned_data['pcode']
+            pcode = form.save(commit=False)  # 데이터베이스에 저장하지 않고, 객체만 반환
+            if Product.objects.filter(pcode=pcode).exists():
+                return JsonResponse({'error': '이미 사용된 제품 코드입니다.'}, status=400)  # 중복 코드 에러 처리
+
+            product.author = request.user
             product.pname = request.pname
             product.punitprice = request.punitprice
             product.pdiscountrate = request.pdiscountrate
@@ -36,21 +41,26 @@ def product_create(request):
             if 'image01' in request.FILES:
                 product.image01 = request.FILES['image01']
                 product.save()  # 최종적으로 질문을 데이터베이스에 저장
-            # 성공 시 JsonResponse로 리다이렉트 URL 반환
-            return JsonResponse({'redirect_url': reverse('sales:index')})
+            return JsonResponse({'redirect_url': reverse('sales:index')})  # 성공 시 JsonResponse로 리다이렉트 URL 반환
         else:
-            # 폼이 유효하지 않은 경우, 에러 메시지 반환
-            return JsonResponse({'error': form.errors}, status=400)
-    else:
-        # GET 요청일 경우 빈 폼 생성
+            return JsonResponse({'error': form.errors}, status=400)  # 폼이 유효하지 않은 경우, 에러 메시지 반환
+    else:  # GET 요청일 경우
         form = ProductForm()
+        existing_products = Product.objects.all()  # 제품 코드 생성 로직
+        if existing_products:
+            last_product = existing_products.order_by('-pcode').first()
+            next_pcode = last_product.pcode + 1  # 마지막 제품 코드에 1을 더함
+        else:
+            next_pcode = 1
+
+    next_pcode_str = str(next_pcode).zfill(4)  # 첫 번째 제품일 경우 0으로 설정
 
     context = {
         'form': form,
-        'categories': categories  # 카테고리 목록 추가
+        'categories': categories,  # 카테고리 목록 추가
+        'next_pcode': next_pcode_str
     }
     return render(request, 'sales/product_form.html', context)
-
 
 # @login_required(login_url='common:login')
 # def product_modify(request, product_id):

@@ -2,18 +2,20 @@ from django import forms
 from sales.models import Product, Category
 
 
-########################################################################################################
-
-
 class CategoryForm(forms.ModelForm):
+    """카테고리 생성을 위한 폼."""
+
     class Meta:
         model = Category
         fields = ['name']
+
+
 # ===================================
 # ProductForm (질문 생성 및 수정 폼)
 # ===================================
 class ProductForm(forms.ModelForm):
-    pcategories = forms.ModelChoiceField(
+    """제품 생성 및 수정을 위한 폼으로, 카테고리 선택을 위한 ModelChoiceField를 포함하고 있습니다."""
+    pcategory = forms.ModelChoiceField(
         queryset=Category.objects.all(),
         empty_label="-- 카테고리 선택 --",  # 기본 옵션을 설정
         label='카테고리',
@@ -22,7 +24,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['pcode', 'pname', 'pcontent', 'punitprice', 'pdiscountrate', 'image01', 'pcategories']
+        fields = ['pcode', 'pname', 'pcontent', 'punitprice', 'pdiscountrate', 'image01']
         labels = {
             'pcode': '제품코드',
             'pname': '제품명',
@@ -30,10 +32,8 @@ class ProductForm(forms.ModelForm):
             'punitprice': '단가',
             'pdiscountrate': '할인율',
             'image01': '이미지01',
+            # pcategory 대한 라벨은 forms.ModelChoiceField에서 정의함.
         }
-
-
-########################################################################################################
 
 # ===================================
 # AnswerForm (답변 생성 및 수정 폼)
@@ -49,8 +49,6 @@ class ProductForm(forms.ModelForm):
 #             'answer_image': '이미지',
 #         }
 
-
-########################################################################################################
 
 # ===================================
 # CommentForm (댓글 및 대댓글 폼)
@@ -78,5 +76,3 @@ class ProductForm(forms.ModelForm):
 #         if commit:
 #             comment.save()  # 데이터베이스에 댓글 저장
 #         return comment
-#
-# ########################################################################################################

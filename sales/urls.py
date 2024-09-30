@@ -21,9 +21,10 @@ urlpatterns = [
     path('', base_views.index, name='index'),
 
     # 질문 상세 페이지로 이동. product_id 매개변수를 받아 해당 질문의 세부 내용을 보여주는 base_views.detail 함수 호출.
-    path('<int:product_id>/', base_views.detail, name='detail'),
-    path('product/create/', product_views.product_create_view, name='product_create')
-    # path('product/modify/<int:product_id>/', product_views.product_modify, name='product_modify'),
+    path('<str:product_id>/', base_views.detail, name='detail'),
+    path('product/create/', product_views.product_create_view, name='product_create'),
+    # path('product/create/detail', product_views.product_create_view, name='product_create'),
+    path('product/modify/<int:product_id>/', product_views.product_modify, name='product_modify'),
     # path('product/delete/<int:product_id>/', product_views.product_delete, name='product_delete'),
     # path('product/vote/<int:product_id>/', product_views.product_vote, name='product_vote'),
     # answer_views.py 관련 URL

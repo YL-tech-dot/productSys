@@ -16,16 +16,24 @@
     {% endif %}
 
     <!--  품목명 및 정보 -->
-    <h2 class="border-bottom py-2">{{ product.pcode }}</h2>
+    <h2 class="border-bottom py-2">{{ product.pname }}</h2>
     <div class="card-body">
         <!--  질문 내용 표시 -->
         <!--        <div class="card-text">{{ product.content|mark }}</div>-->
-        <div class="card-text">{{ product.pcode }}</div>
-        <div class="card-text">{{ product.category }}</div>
-        <div class="card-text">{{ product.pname }}</div>
-        <div class="card-text">{{ product.punitprice }}</div>
-        <div class="card-text">{{ product.pdiscountrate }}</div>
-
+        <div class="card-text">제품 번호 {{ product.pcode }}</div>
+        <div class="card-text">카테고리 : {{ product.pcategory }}</div>
+        <div class="card-text">품목 : {{ product.pname }}</div>
+        <div class="card-text">단가 : {{ product.punitprice }}</div>
+        <div class="card-text" >할인율 : {{ product.pdiscountrate }}%</div>
+        <br>
+        <!--  팝업창 이미지01 표시 -->
+        {% if product.image01 %}
+        <div>
+            <h5>제품 이미지</h5>
+            <img src="{{ product.image01.url }}" alt="Uploaded Image" style="max-width: 500px; height: auto;">
+        </div>
+        {% endif %}
+        <!-- product 생성 일자 -->
         <div class="d-flex justify-content-end">
             {% if product.modify_date %}
             <div class="badge bg-light text-dark p-2 text-start mx-3">
@@ -34,28 +42,16 @@
             </div>
             {% else %}
             <!-- 수정 데이터가 없을 경우 가리기. -->
-            <div class="badge bg-light text-dark p-2 text-start mx-3">
-                <div class="mb-2" hidden>modified at</div>
-                <div hidden>{{ product.modify_date }}</div>
-            </div>
             {% endif %}
             <div class="badge bg-light text-dark p-2 text-start">
                 <div class="mb-2">{{ product.author.username }}</div>
                 <div>{{ product.create_date }}</div>
             </div>
         </div>
-
-        <!--  업로드된 이미지1 표시 -->
-        {% if product.image1 %}
-        <div>
-            <h5>제품 이미지</h5>
-            <img src="{{ product.image1.url }}" alt="Uploaded Image" style="max-width: 300px; height: auto;">
-        </div>
-        {% endif %}
     </div>
-<!-- 이전 이후 페이지 이동.-->
 </div>
 {% endblock %}
+<!-- 이전 이후 페이지 이동 기능 넣어보자....-->
 
 {% block script %}
 <script>

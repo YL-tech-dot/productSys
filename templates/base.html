@@ -12,13 +12,14 @@
     <!-- , shrink-to-fit=no   -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'baseboot_min/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <style>@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nabla&display=swap');</style>
 <!--    <script src="{% static 'baseboot_min/color-modes.js' %}"></script>-->
 <!--    <script src="{% static 'baseboot_min/sidebars.css' %}"></script>-->
 <!--    <script src="{% static 'baseboot_min/sidebars.js ' %}"></script>-->
 <!--    <script src="../baseboot_min/color-modes.js"></script>-->
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+<!--    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">-->
     <style>
         .btn-bd-primary {
             --bd-violet-bg: #712cf9;
@@ -36,7 +37,7 @@
             --bs-btn-active-border-color: #5a23c8;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
 </head>
 <body>
     <!-- 네비게이션 바 -->
@@ -47,9 +48,10 @@
     <!--    End -->
     <!-- jQuery JS   -->
     <script src="{% static 'baseboot_min/jquery-3.4.1.min.js' %}"></script>
-    <!-- Bootstrap JS -->
+    <!-- color JS -->
+    <script src="{% static 'baseboot_min/color-modes.js' %}"></script>
+    <!-- bootstriup Start   -->
     <script src="{% static 'baseboot_min/bootstrap.min.js' %}"></script>
-    <!-- 자바스크립트 Start   -->
     {% block script %}
     {% endblock %}
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">

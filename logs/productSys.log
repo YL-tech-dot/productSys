@@ -1,0 +1,75 @@
+2024-09-30 18:57:28,477 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2024-09-30 18:58:59,219 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2024-09-30 18:58:59,882 [INFO] sales: INFO 레벨로 출력
+2024-09-30 18:59:13,360 [ERROR] django.request: Internal Server Error: /sales/sales/product/create/detail
+Traceback (most recent call last):
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\venvs\productSys\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\projects\productSys\sales\views\product_views.py", line 25, in product_create_view
+    if form.is_valid():
+  File "C:\venvs\productSys\lib\site-packages\django\forms\forms.py", line 177, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\venvs\productSys\lib\site-packages\django\forms\forms.py", line 172, in errors
+    self.full_clean()
+  File "C:\venvs\productSys\lib\site-packages\django\forms\forms.py", line 376, in full_clean
+    self._post_clean()
+  File "C:\venvs\productSys\lib\site-packages\django\forms\models.py", line 405, in _post_clean
+    self.instance.full_clean(exclude=exclude, validate_unique=False)
+  File "C:\venvs\productSys\lib\site-packages\django\db\models\base.py", line 1216, in full_clean
+    self.clean()
+  File "C:\projects\productSys\sales\models.py", line 66, in clean
+    if self.pdiscountrate < 0 or self.pdiscountrate > 100:
+TypeError: '<' not supported between instances of 'NoneType' and 'int'
+2024-09-30 18:59:34,216 [INFO] django.utils.autoreload: C:\projects\productSys\sales\urls.py changed, reloading.
+2024-09-30 18:59:35,923 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2024-09-30 18:59:37,903 [INFO] sales: INFO 레벨로 출력
+2024-09-30 18:59:50,930 [ERROR] django.request: Internal Server Error: /sales/product/create/detail
+Traceback (most recent call last):
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\venvs\productSys\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\projects\productSys\sales\views\product_views.py", line 30, in product_create_view
+    product.pname = request.pname
+AttributeError: 'WSGIRequest' object has no attribute 'pname'
+2024-09-30 19:00:34,390 [INFO] django.utils.autoreload: C:\projects\productSys\sales\urls.py changed, reloading.
+2024-09-30 19:00:35,693 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2024-09-30 19:00:42,895 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:00:54,898 [ERROR] django.request: Internal Server Error: /sales/product/create/
+Traceback (most recent call last):
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\venvs\productSys\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\projects\productSys\sales\views\product_views.py", line 30, in product_create_view
+    product.pname = request.pname
+AttributeError: 'WSGIRequest' object has no attribute 'pname'
+2024-09-30 19:02:32,696 [ERROR] django.request: Internal Server Error: /sales/product/create/
+Traceback (most recent call last):
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\venvs\productSys\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\venvs\productSys\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\projects\productSys\sales\views\product_views.py", line 30, in product_create_view
+    product.pname = request.pname
+AttributeError: 'WSGIRequest' object has no attribute 'pname'
+2024-09-30 19:27:59,416 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:30:50,238 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:33:08,289 [INFO] django.utils.autoreload: C:\projects\productSys\sales\views\product_views.py changed, reloading.
+2024-09-30 19:33:09,524 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2024-09-30 19:33:32,406 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2024-09-30 19:33:49,290 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:38:32,039 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:38:39,489 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:38:52,972 [INFO] sales: INFO 레벨로 출력
+2024-09-30 19:39:04,956 [INFO] django.utils.autoreload: C:\projects\productSys\config\settings\base.py changed, reloading.

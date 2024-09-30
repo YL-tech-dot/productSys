@@ -4,7 +4,7 @@
 
 <!--  이미지 등록 팝업창 -->
 <div id="uploadModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-     aria-hidden="true">
+    aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content bg-dark text-white">
             <div class="modal-header">
@@ -15,18 +15,20 @@
             </div>
             <div class="modal-body">
                 <div class="row">
+                    <div id="progress-bar" class="col-md-12">이미지 업로드 상태:</div>
                     <div class="col-md-12">
                         <!--  첫 번째 이미지 드래그 앤 드롭 -->
                         <div id="drop-zone01"
-                             class="border border-primary rounded d-flex justify-content-center align-items-center p-3"
-                             style="height: Auto; position: relative;">
+                            class="border border-primary rounded d-flex justify-content-center align-items-center p-3"
+                            style="height: Auto; position: relative;">
                             <!-- 이전 : class="border border-primary rounded d-flex justify-content-center align-items-center p-3"
                              style="height: 150px; position: relative;"-->
                             <div class="drop-text">이미지를 드래그 앤 드롭하거나 클릭하세요.</div>
-                            <input type="file" id="image1" class="file-input w-100 h-100 position-absolute"
-                                   accept="image/png, image/jpeg" style="opacity: 0; cursor: pointer;">
+                            <input type="file" name="image01" id="image01"
+                                class="file-input w-100 h-100 position-absolute" accept="image/png, image/jpeg"
+                                style="opacity: 0; cursor: pointer;">
                             <!-- accept ="image/*" 부분을 *(all) image/png, image/jpeg 로 교체 -->
-                            <img id="preview-image01" class="img-fluid" style="display: none;"/>
+                            <img id="preview-image01" class="img-fluid" style="display: none;" />
                         </div>
                     </div>
                 </div>
@@ -56,8 +58,8 @@
             <input type="text" name="pcode" id="pcode" class="form-control" value="{{ next_pcode }}" readonly>
         </div>
         <div class="form-group mb-3">
-            <label for="pcategories">카테고리</label>
-            <select name="pcategories" id="pcategories" class="form-control" required>
+            <label for="pcategory">카테고리</label>
+            <select name="pcategory" id="pcategory" class="form-control" required>
                 <option value="">-- 카테고리 선택 --</option>
                 {% for category in categories %}
                 <option value="{{ category.id }}">{{ category.name }}</option>
@@ -70,31 +72,32 @@
         <div class="form-group mb-3">
             <label for="pname">제품명</label>
             <input type="text" name="pname" id="pname" class="form-control"
-                   value="{{ form.pname.value|default_if_none:'' }}" required>
+                value="{{ form.pname.value|default_if_none:'' }}" required>
         </div>
         <div class="form-group mb-3">
             <label for="punitprice">단가</label>
             <input type="number" name="punitprice" id="punitprice" class="form-control"
-                   value="{{ form.punitprice.value|default_if_none:'' }}" required>
+                value="{{ form.punitprice.value|default_if_none:'' }}" required>
         </div>
         <div class="form-group mb-3">
-            <label for="pdiscountrate">할인율</label>
+            <label for="pdiscountrate">할인율(0.0% ~ 100%)</label>
             <input type="number" name="pdiscountrate" id="pdiscountrate" class="form-control"
-                   value="{{ form.pdiscountrate.value|default_if_none:'' }}" required>
+                value="{{ form.pdiscountrate.value|default_if_none:'' }}" required>
         </div>
         <div class="form-group mb-3">
             <label for="pcontent">제품설명</label>
-            <textarea name="pcontent" id="pcontent" class="form-control" rows="10">{{ form.pcontent.value|default_if_none:'' }}</textarea>
+            <textarea name="pcontent" id="pcontent" class="form-control"
+                rows="10">{{ form.pcontent.value|default_if_none:'' }}</textarea>
         </div>
         <!--  image 업로드 버튼 -->
-        <!--    나중에 썸네일 이미지를 처리해주는 앱(모델)도 있으면 좋겠다. 1)아마도 views ~ DB 사이에 이미지 사이즈 조절해주는 곳을 거쳐야 할듯. 2) 크롭해주는 기능은 어떻게 구현할까?    -->
         <button type="button" id="uploadBtn" class="btn btn-secondary mt-3" data-toggle="modal"
-                data-target="#uploadModal">
+            data-target="#uploadModal">
             {% if form.instance.pk %}
             이미지 새로 등록 및 확인
             {% else %}
             이미지 등록 및 보기
             {% endif %}
+            <!--    나중에 썸네일 이미지를 처리해주는 앱(모델)도 있으면 좋겠다. 1)아마도 views ~ DB 사이에 이미지 사이즈 조절해주는 곳을 거쳐야 할듯. 2) 크롭해주는 기능은 어떻게 구현할까?    -->
         </button>
         <!--  등록/수정 버튼 -->
         <button type="submit" class="btn btn-primary mt-3">
@@ -105,125 +108,149 @@
             {% endif %}
         </button>
     </form>
-</div>
-
-<!--  이미지 미리보기 -->
-<div id="image-preview-container" class="my-3">
-    <div class="row">
-        <div class="col-md-6 text-center">
-            {% if form.instance.image1 %}
-            <p>등록된 이미지 01</p>
-            <img src="{{ form.instance.image01.url }}" alt="Uploaded Image 01" class="img-fluid" id="main-preview01">
-            {% endif %}
+    <!--  이미지 미리보기 -->
+    <div id="image-preview-container" class="my-3">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                {% if form.instance.image01 %}
+                <p>등록된 이미지 01</p>
+                <img src="{{ form.instance.image01.url }}" alt="Uploaded Image 01" class="img-fluid"
+                    id="main-preview01">
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block script %}
 <style>
-#preview-image01 {
-    max-width: 100%; /* 부모 요소의 너비에 맞춰 조정 */
-    max-height: 100%; /* 부모 요소의 높이에 맞춰 조정 */
-    height: auto; /* 비율 유지 */
-}
+    @media (max-width: 768px) {
+        #uploadModal {
+            width: 90%;
+        }
+
+        /*모바일에서 모달의 너비를 줄임*/
+    }
+
+    #preview-image01 {
+        max-width: 100%;
+        /* 부모 요소의 너비에 맞춰 조정 */
+        max-height: 100%;
+        /* 부모 요소의 높이에 맞춰 조정 */
+        height: auto;
+        /* 비율 유지 */
+    }
 </style>
+
+
+
 <script>
-    $(document).ready(function() {
-        // 팝업창, 이미지 등록 버튼, 확인 버튼 요소 선택
+    $(document).ready(function () {
+        // 제품명 입력 제한
+        $('#pname').on('input', function () {
+            const maxLength = 20;
+            if ($(this).val().length > maxLength) {
+                alert('제품명은 최대 20자까지 입력 가능합니다.');
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+
+        // 팝업창, 버튼 요소 선택
         const modal = $('#uploadModal');  // 팝업창 선택
         const uploadBtn = $('#uploadBtn');  // 업로드 버튼 선택
         const confirmBtn = $('.confirm-btn');  // 확인 버튼 선택
 
-        // 제목과 내용 입력 필드를 선택
-        const pcodeInput = $('#pcode');  // code 입력 필드 선택
-        const pnameInput = $('#pname');  // name 입력 필드 선택
-        const punitpriceInput = $('#punitprice');  // unitprice 입력 필드 선택
-        const pdiscountrateInput = $('#pdiscountrate');  // 할인율 입력 필드 선택
-        const pcontentInput = $('#pcontent');  // 내용 입력 필드 선택
+        // 입력 필드 선택
+        const pcodeInput = $('#pcode');
+        const pnameInput = $('#pname');
+        const punitpriceInput = $('#punitprice');
+        const pdiscountrateInput = $('#pdiscountrate');
+        const pcontentInput = $('#pcontent');
 
         /* 나중에 할인율이 자동으로 적용된 값을 나타내는 필터와 코드 번호를 자동으로 매겨주는 값이 있으면 좋겠다.
         이것은 어떻게 하려나...  페이지 내에 중복번호가 있을 경우 i+1  */
-
         // 폼과 이미지 미리보기 컨테이너 선택
-        const salesForm = $('#salesForm');  // 폼 요소 선택
-        const imagePreviewContainer = $('#image-preview-container');  // 미리보기 컨테이너 선택
+        const salesForm = $('#salesForm');
+        const imagePreviewContainer = $('#image-preview-container');
 
-        // 이미지 업로드를 위한 설정 배열
+        // 이미지 업로드 설정 배열
         const imageUploadSettings = [
-            { input: '#image1', dropZone: '#drop-zone01', previewId: '#preview-image01', mainPreviewId: '#main-preview01 img' }
+            { input: '#image01', dropZone: '#drop-zone01', previewId: '#preview-image01', mainPreviewId: '#main-preview01 img' }
         ];
 
         // Image Drag & Drop & Select File
         function setupImageUpload(inputSelector, dropZoneSelector, previewId) {
-            const $dropZone = $(dropZoneSelector);  // 드롭존 선택
-            const $fileInput = $(inputSelector);  // 파일 입력 필드 선택
-            const $dropText = $dropZone.find('.drop-text');  // 드롭존 안내 문구 선택
-            const $imagePreview = $(previewId);  // 이미지 미리보기 선택
+            const $dropZone = $(dropZoneSelector);
+            const $fileInput = $(inputSelector);
+            const $dropText = $dropZone.find('.drop-text');
+            const $imagePreview = $(previewId);
 
-            // Dragging : 드롭존 스타일 변경
-            $dropZone.on('dragover', function(event) {
-                event.preventDefault();  // 기본 동작 방지
-                $dropZone.addClass('hover');  // 드롭존에 'hover' 클래스 추가
+            $dropZone.on('dragover', function (event) {
+                event.preventDefault();
+                $dropZone.addClass('hover');
             });
 
-            // Drag Fin : 드롭존 스타일 원래대로 변경
-            $dropZone.on('dragleave', function() {
-                $dropZone.removeClass('hover');  // 'hover' 클래스 제거
+            $dropZone.on('dragleave', function () {
+                $dropZone.removeClass('hover');
             });
 
-            // Drop Zone
-            $dropZone.on('drop', function(event) {
-                event.preventDefault();  // 기본 동작 방지
-                $dropZone.removeClass('hover');  // 'hover' 클래스 제거
+            $dropZone.on('drop', function (event) {
+                event.preventDefault();
+                $dropZone.removeClass('hover');
 
-                const files = event.originalEvent.dataTransfer.files;  // 드롭된 파일 가져오기
-                if (files.length > 0 && files[0].type.startsWith('image/')) {  // 파일이 이미지일 경우
-                    $fileInput[0].files = files;  // 파일 입력 필드에 파일 설정
-                    $dropText.hide();  // 드롭존 안내 문구 숨기기
+                const files = event.originalEvent.dataTransfer.files;
+                if (files.length > 0 && files[0].type.startsWith('image/')) {
+                    $fileInput[0].files = files;
+                    $dropText.hide();
 
-                    const reader = new FileReader();  // FileReader 객체 생성
-                    reader.onload = function(e) {
-                        $imagePreview.attr('src', e.target.result).show();  // 미리보기를 업데이트
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $imagePreview.attr('src', e.target.result).show();
                     }
-                    reader.readAsDataURL(files[0]);  // 파일을 읽기 시작
+                    reader.readAsDataURL(files[0]);
+                    console.log(e.target.result);
                 }
             });
 
             // 파일 선택 시 처리
-            $fileInput.on('change', function(event) {
-                if (event.target.files.length > 0) {  // 파일이 선택되었을 경우
-                    $dropText.hide();  // 드롭존 안내 문구 숨기기
+            $fileInput.on('change', function (event) {
+                if (event.target.files.length > 0) {
+                    $dropText.hide();
 
-                    const reader = new FileReader();  // FileReader 객체 생성
-                    reader.onload = function(e) {
-                        $imagePreview.attr('src', e.target.result).show();  // 미리보기를 업데이트
-                        // 기존 이미지가 있을 경우 메인 미리보기도 업데이트
-                        const mainPreviewImg = $(setting.mainPreviewId);
-                        mainPreviewImg.attr('src', e.target.result).show();  // 메인 미리보기를 업데이트
+                    const reader = new FileReader();
+                    const currentSetting = imageUploadSettings.find(s => s.input === inputSelector); // 현재 setting 찾기
 
-                    }
-                    reader.readAsDataURL(event.target.files[0]);  // 파일을 읽기 시작
+                    reader.onload = function (e) {
+                        $imagePreview.attr('src', e.target.result).show();
+                        if (currentSetting) {
+                        const mainPreviewImg = $(currentSetting.mainPreviewId);
+                        mainPreviewImg.attr('src', e.target.result).show();
+                        }
+                        console.log($imagePreview.attr('src'));  // src 값을 출력
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
                 }
             });
         }
 
-        // 제목과 내용이 비어 있는지 확인하고 업로드 버튼 활성화/비활성화
+        // 제목과 내용 유효성 검사
         function checkFormValidity() {
-            const pcodeValid = pcodeInput.val().trim() !== '';  // 제목이 비어있는지 확인
-            const pnameValid = pnameInput.val().trim() !== '';  // 제목이 비어있는지 확인
-            const pcontentValid = pcontentInput.val().trim() !== '';  // 내용이 비어있는지 확인
-            uploadBtn.prop('disabled', !(subjectValid && contentValid));  // 제목과 내용이 모두 있으면 버튼 활성화
+            const pcodeValid = pcodeInput.val().trim() !== '';
+            const pnameValid = pnameInput.val().trim() !== '';
+            const punitpriceValid = punitpriceInput.val().trim() !== '';
+            const pdiscountrateValid = pdiscountrateInput.val().trim() !== '';
+            const pcontentValid = pcontentInput.val().trim() !== '';
+            uploadBtn.prop('disabled', !(pcodeValid && pnameValid && punitpriceValid && pdiscountrateValid && pcontentValid));
         }
 
         // 업로드 버튼 클릭 시 팝업창 표시
-        uploadBtn.on('click', function() {
-            modal.css('display', 'flex');  // 팝업창을 보여줌
+        uploadBtn.on('click', function () {
+            modal.css('display', 'flex');
         });
 
-        // 확인 버튼 클릭 시 팝업창 숨기기
-        confirmBtn.on('click', function() {
+        // 업로드 버튼 클릭 시 팝업창 숨기기
+        confirmBtn.on('click', function () {
             modal.hide();  // 팝업창 숨기기
 
             // 이미지 미리보기 업데이트
@@ -234,10 +261,10 @@
 
                 if (fileInput.files.length > 0) {  // 파일이 선택되었을 경우
                     const reader = new FileReader();  // FileReader 객체 생성
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         previewImg.attr('src', e.target.result).show();  // 미리보기를 업데이트
                         mainPreviewImg.attr('src', e.target.result).show();  // 메인 미리보기를 업데이트
-                    }
+                    };
                     reader.readAsDataURL(fileInput.files[0]);  // 파일을 읽기 시작
                 } else {
                     const existingImgSrc = mainPreviewImg.attr('src');  // 기존 이미지 소스 가져오기
@@ -250,26 +277,36 @@
 
         // 각 이미지 업로드 설정에 대해 드래그 앤 드롭 및 파일 선택 처리 설정
         imageUploadSettings.forEach(setting => {
-            setupImageUpload(setting.input, setting.dropZone, setting.previewId);  // 각 이미지 설정
+            setupImageUpload(setting.input, setting.dropZone, setting.previewId);
         });
 
-        // 제목과 내용 입력 필드에 유효성 검사 연결
-        subjectInput.add(contentInput).on('input', checkFormValidity);  // 입력 필드가 변경될 때마다 유효성 검사
-        checkFormValidity();  // 처음 로드 시 유효성 검사 실행
+        // 유효성 검사 연결
+        pnameInput.add(pcontentInput).on('input', checkFormValidity);
+        checkFormValidity();
 
         // 폼 제출 시 처리
-        salesForm.on('submit', function(event) {
-            event.preventDefault();  // 폼의 기본 제출 동작을 막음
+        salesForm.on('submit', function (event) {
+            event.preventDefault();
 
-            const formData = new FormData(this);  // FormData 객체 생성
+            const formData = new FormData(this);
 
-            // 각 파일 입력 필드에서 선택된 파일을 FormData에 추가
             imageUploadSettings.forEach(setting => {
-                const fileInput = $(setting.input)[0];  // 파일 입력 필드 선택
-                if (fileInput.files.length > 0) {
-                    formData.append(fileInput.id, fileInput.files[0]);  // FormData에 파일 추가
+                const fileInput = $(setting.input)[0];
+                if (fileInput && fileInput.files.length > 0) {
+                    formData.append(fileInput.id, fileInput.files[0]);
                 }
             });
+            // 이미지 파일이 선택되었는지 확인
+            if ($('#image01')[0].files.length === 0) {
+                alert('이미지를 1장 올려주세요.');  // 경고 메시지
+                return;  // 함수 종료
+            }
+            // 폼이 수정 상태인지 확인
+                const isModify = '{{ form.instance.pk|yesno:"true,false" }}';  // 수정 상태 여부 확인
+                const questionId = '{{ form.instance.pk }}';  // 수정 중인 경우 PK 값 가져오기
+                const url = isModify === 'true'
+                    ? '{% url "sales:product_modify" product_id=0 %}'.replace('0', productId)  // 수정 시 URL 설정
+                    : '{% url "sales:product_create" %}';  // 생성 시 URL 설정
 
             // Ajax 요청으로 폼 데이터 전송
             $.ajax({
@@ -278,14 +315,27 @@
                 data: formData,  // 전송할 데이터
                 processData: false,  // FormData 객체의 자동 처리 방지
                 contentType: false,  // Content-Type 설정 방지 (자동 설정)
-                headers: {'X-CSRFToken': '{{ csrf_token }}'},  // CSRF 토큰 추가
-                success: function(response) {
-                    window.location.href = response.redirect_url;  // 성공 시 리다이렉트
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },  // CSRF 토큰 추가
+                //  xhr 속성을 사용해 업로드 진행 상황을 감지하고, 진행률을 바 형태로 표현할 수 있습니다. HTML에서 <div id="progress-bar"></div>와 같은 요소를 추가하면 됩니다.
+                xhr: function () {
+                    const xhr = new window.XMLHttpRequest();
+                    // 진행 상태 표시
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            const percentComplete = (evt.loaded / evt.total) * 100;
+                            $('#progress-bar').css('width', percentComplete + '%').text(Math.round(percentComplete) + '%');
+                        }
+                    }, false);
+                    return xhr;
                 },
-                error: function() {
-                    alert('이미지를 1장 올려주세요.');  // 오류 발생 시 경고창 표시
+                success: function (response) {
+                    window.location.href = response.redirect_url;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('오류가 발생했습니다: ' + textStatus + ' - ' + errorThrown);
                 }
             });
+            console.log([...formData]);  // FormData 내용 확인
         });
     });
 </script>

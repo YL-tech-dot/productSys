@@ -24,9 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('home/', include('home.urls')), # homepage 용
     # path('mypage/', include('mypage.urls')), # my page 용
+    path('', base_views.index, name='index'),  # '/' 에 해당되는 path
     path('sales/', include('sales.urls')),
     path('common/', include('common.urls')),
-    path('', base_views.index, name='index'),  # '/' 에 해당되는 path
     # path('api/', include('myapp.urls')),  # API URL 포함
 ]
 handler404 = 'common.views.page_not_found'

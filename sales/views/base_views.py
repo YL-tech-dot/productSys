@@ -1,8 +1,7 @@
 from django.core.paginator import Paginator  # 페이징 처리를 위한 Paginator 클래스
 from django.shortcuts import render, get_object_or_404  # 뷰 처리, 객체 조회 기능
-# from django.db.models import Q  # 검색 조건을 위한 Q 객체
 import logging  # 로그 출력을 위한 모듈
-from django.db.models import FilteredRelation, Q
+from django.db.models import Q
 
 logger = logging.getLogger('sales')  # 'sales'라는 로거 생성
 
@@ -24,8 +23,7 @@ def index(request):
 
     # Product 모델의 데이터를 최신순으로 정렬하여 가져옵니다.
     product_list = Product.objects.order_by('-create_date')
-    # 필터용
-    # filtered_books = Product.objects.filter(FilteredRelation('pname', condition=Q(pcategories='computer')))
+
     # 검색어(kw)가 있으면 필터링 수행
     if kw:
         # 제목, 내용, 답변 내용, 질문 글쓴이, 답변 글쓴이에서 검색어를 포함한 데이터 필터링
@@ -64,11 +62,11 @@ def detail(request, product_id):
     # 주어진 product_id에 해당하는 Product 객체를 가져옵니다. 없으면 404 에러 발생
     product = get_object_or_404(Product, pk=product_id)
 
-    # 질문에 달린 댓글들 중, 부모가 없는 댓글들(최상위 댓글)을 가져옵니다.
-    comments = product.comments.filter(parent__isnull=True)
+    # # 질문에 달린 댓글들 중, 부모가 없는 댓글들(최상위 댓글)을 가져옵니다.
+    # comments = product.comments.filter(parent__isnull=True)
 
-    # 템플릿에 전달할 데이터 설정 (질문, 댓글)
-    context = {'product': product, 'comments': comments}
+    # # 템플릿에 전달할 데이터 설정 (질문, 댓글)
+    context = {'product': product}
 
     # 템플릿 'sales/product_detail.html'을 렌더링하여 응답 반환
     return render(request, 'sales/product_detail.html', context)

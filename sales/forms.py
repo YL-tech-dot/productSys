@@ -21,6 +21,15 @@ class ProductForm(forms.ModelForm):
         label='카테고리',
         required=True
     )
+    pname = forms.CharField(
+        required=True,
+        max_length=20,  # 길이 제한 추가
+        error_messages={'required': '제품명을 입력해 주세요.'}
+    )
+    image01 = forms.ImageField(
+        required=True,
+        error_messages={'required': '이미지를 업로드해 주세요.'}
+    )
 
     class Meta:
         model = Product
@@ -34,6 +43,8 @@ class ProductForm(forms.ModelForm):
             'image01': '이미지01',
             # pcategory 대한 라벨은 forms.ModelChoiceField에서 정의함.
         }
+
+
 
 # ===================================
 # AnswerForm (답변 생성 및 수정 폼)

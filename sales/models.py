@@ -29,12 +29,12 @@ class Product(models.Model):
     pname = models.CharField(max_length=20, blank=False)
     punitprice = models.PositiveIntegerField(blank=False)
     pdiscountrate = models.DecimalField(max_digits=3, decimal_places=1, blank=False)  # 할인율
-    pcategories = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    pcategory = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     pcontent = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
     modify_date = models.DateTimeField(null=True, auto_now_add=True, blank=True)
     view_count = models.PositiveIntegerField(default=0)
-    image01 = models.ImageField(upload_to='sales/image1/', null=False, blank=False, verbose_name='업로드 이미지1')
+    image01 = models.ImageField(upload_to='sales/image01/', null=False, blank=False, verbose_name='업로드 이미지01')
 
     # 이미지1: 질문에 첨부된 첫 번째 이미지, null과 빈 값을 허용하지 않음
 
@@ -42,15 +42,18 @@ class Product(models.Model):
         """ save 메서드를 오버라이드기존 이미지가 있는 경우, 새 이미지로 교체할 때 이전 파일 삭제 """
         # 업데이트 전 이전 이미지 파일 삭제
         if self.pk:  # 기존 인스턴스일 경우
-            old_objects = Product.objects.get(pk=self.pk)
-            if old_objects.image01 and old_objects.image01 != self.image01:
-                if os.path.isfile(old_objects.image01.path):
-                    os.remove(old_objects.image01.path)
+            try:
+                old_objects = Product.objects.get(pk=self.pk)
+                if old_objects.image01 and old_objects.image01 != self.image01:
+                    if os.path.isfile(old_objects.image01.path):
+                        os.remove(old_objects.image01.path)
+            except Product.DoesNotExist:
+                pass  # 만약 객체가 존재하지 않는다면 아무 작업도 하지 않음
         # pcode를 4자리 문자열로 변환 시키는 설정
         if not self.pcode:
             last_product = Product.objects.order_by('-pcode').first()
             next_number = int(last_product.pcode) + 1 if last_product else 1
-            self.pcode = str(next_number).zfill(4)  # 4자리 문자열로 설정
+            self.pcode = int(str(next_number).zfill(4))  # 4자리 문자열로 설정
         super().save(*args, **kwargs)  # 최종적으로 객체 저장
 
     def delete(self, *args, **kwargs):
@@ -66,8 +69,8 @@ class Product(models.Model):
             raise ValidationError('할인율은 0에서 100 사이의 값이어야 합니다.')
 
     # 호출될시 디버깅시 다음 이름과 가격을 나타냄.
-    def __str__(self):
-        return f"{self.pname} - {self.punitprice}원 ({self.pdiscountrate}%)"
+    # def __str__(self):
+    #     return self.pname
 
 
 @receiver(post_save, sender=Product)
